@@ -26,13 +26,8 @@ const CheckBox = styled.div`
 const Text = styled.div`
   margin-left: 0.5rem;
   flex: 1;
-  /* 체크되었을때 보여줄 스타일? 이거 styled에서 될지모르겟다*/
-  &.checked {
-    svg {
-      color: #22b8cf;
-      text-decoration: line-through;
-    }
-  }
+  color: ${(props) => props.selected && "#22b8cf"};
+  text-decoration: ${(props) => props.selected && "line-through"};
 `;
 const Remove = styled.div`
   display: flex;
@@ -45,18 +40,20 @@ const Remove = styled.div`
   }
 `;
 
-const TodoListItem = () => {
+const TodoListItem = ({ todo, onRemove, onToggle }) => {
+  const { id, text, checked } = todo;
   return (
     <Item>
-      <CheckBox>
-        <MdCheckBoxOutlineBlank />
-        <Text>할 일</Text>
+      <CheckBox onClick={() => onToggle(id)}>
+        {checked ? <MdCheckBox /> : <MdCheckBoxOutlineBlank />}
+        <Text selected={checked}>{text}</Text>
       </CheckBox>
-      <Remove>
+      <Remove onClick={() => onRemove(id)}>
         <MdRemoveCircleOutline />
       </Remove>
     </Item>
   );
 };
 
-export default TodoListItem;
+//useMemo 사용으로 todo, onRemove, onToggle 바뀔때만 리렌더링 함.
+export default React.memo(TodoListItem);

@@ -8,14 +8,19 @@ const List = styled.div`
   overflow-y: auto;
 `;
 
-const TodoList = () => {
+const TodoList = ({ todos, onRemove, onToggle }) => {
   return (
     <List>
-      <TodoListItem />
-      <TodoListItem />
-      <TodoListItem />
+      {todos.map((todo) => (
+        <TodoListItem
+          todo={todo}
+          key={todo.id}
+          onRemove={onRemove}
+          onToggle={onToggle}
+        />
+      ))}
     </List>
   );
 };
 
-export default TodoList;
+export default React.memo(TodoList);
